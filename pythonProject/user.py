@@ -1,7 +1,7 @@
 import socket
 
 
-def check_resp(resp):
+def check_resp(resp, map):
     try:
         if int(resp[0]) in range(0, 3) and int(resp[2]) in range(0, 3):
             if resp[1] == '/':
@@ -28,14 +28,16 @@ while True:
         print(msg)
         if msg[0] != '[':
             break
+        map = list(msg.split('\n')[0])
         myyy = True
         while myyy:
             resp = input(f"chose the cordinations x/y 0-2: ")
-            if check_resp(resp):
+            if check_resp(resp, map):
                 s.send(resp.encode())
                 myyy = False
     while True:
-        resp = input(f"\n")
+        msg = wait_for_fucking_massage(s)
+        resp = input(f"\n {msg}")
         if resp == 'y':
             s.send(resp.encode())
             break
